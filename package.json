@@ -1,0 +1,20 @@
+{
+  "name": "fuzzy-predicate",
+  "version": "1.0.0",
+  "description": "Filter an array of objects (or an array of just about anything) down to only include those objects with properties somewhat matching the provided query.",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "test": "mocha",
+    "coverage": "istanbul cover _mocha"
+  },
+  "author": "Daniel Pfeiffer",
+  "repository": "mediabounds/fuzzy-predicate",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^3.13.1",
+    "eslint-config-google": "^0.6.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.2.0"
+  }
+}
