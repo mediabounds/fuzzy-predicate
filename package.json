@@ -1,6 +1,6 @@
 {
   "name": "fuzzy-predicate",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Filter an array of objects (or an array of just about anything) down to only include those objects with properties somewhat matching the provided query.",
   "main": "index.js",
   "scripts": {
