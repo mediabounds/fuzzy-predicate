@@ -1,41 +1,56 @@
 fuzzy-predicate
 ============
+[![Build Status](https://travis-ci.org/mediabounds/fuzzy-predicate.svg?branch=master)](https://travis-ci.org/mediabounds/fuzzy-predicate)
+[![codecov](https://codecov.io/gh/mediabounds/fuzzy-predicate/branch/master/graph/badge.svg)](https://codecov.io/gh/mediabounds/fuzzy-predicate)
+[![dependencies Status](https://david-dm.org/mediabounds/fuzzy-predicate/status.svg)](https://david-dm.org/mediabounds/fuzzy-predicate)
+
+
 Filter an array of objects (or an array of just about anything) down to only include those objects with properties _somewhat_ matching the provided query.
 
-	var fuzzy = require("fuzzy-predicate");
+```js
+var fuzzy = require("fuzzy-predicate");
 	
-	var data = [
-		{
-			name: "Dan Smith"
-		},
-		{
-			name: "Issac Long"
-		}
-	];
+var data = [
+	{
+		name: "Dan Smith"
+	},
+	{
+		name: "Issac Long"
+	}
+];
 	
-	var result = data.filter(fuzzy("dan"));
+var result = data.filter(fuzzy("dan"));
 	
-	console.log(result);
-	// [{
-	// 		name: "Dan Smith"
-	// }]
+console.log(result);
+// [{
+// 		name: "Dan Smith"
+// }]
+```
 
 Installation
 ------------
-	npm install fuzzy-predicate --save
+```
+npm install fuzzy-predicate --save
+```
 
 Usage
 ------------
 
 ### 1. Import the library
-	var fuzzy = require("fuzzy-predicate");
+```js	
+var fuzzy = require("fuzzy-predicate");
+```
 
 ### 2. Generate a predicate
-	// where "apple" is the data you're looking for
-	var predicate = fuzzy("apple");
+```js
+// where "apple" is the data you're looking for
+var predicate = fuzzy("apple");
+```
 
 ### 3. Use the predicate to filter an array
-	var result = myArray.filter(predicate);
+```js
+var result = myArray.filter(predicate);
+```
 
 `result` now contains only the elements in `myArray` that _somewhat_ match the query ("apple").
 
@@ -45,46 +60,16 @@ Example
 ------------
 `fuzzy-predicate` is an ideal tool for using user input to filter a response from a Web service. Let's say you have an array of objects that each represent a user and you wanted to find user(s) named "John":
 
-	var fuzzy = require("fuzzy-predicate");
+```js
+var fuzzy = require("fuzzy-predicate");
 	
-	var data = [
-		{
-			id: "7128792",
-			name: "John Doe",
-			mail: "jdoe@example.com",
-			twitter: "john_doe"
-		},
-		{
-			id: "1203922",
-			name: "Jane Doe",
-			mail: "jane.doe@example.com",
-			twitter: "grannysmithapple"
-		},
-		{
-			id: "9189701",
-			name: "Dan Smith",
-			mail: "dan.smith@example.com",
-			twitter: "javascripz",
-		}
-	];
-
-	var result = data.filter(fuzzy("john"));
-	
-In this scenario, `result` would be an array containing a single element:
-
+var data = [
 	{
 		id: "7128792",
 		name: "John Doe",
 		mail: "jdoe@example.com",
 		twitter: "john_doe"
-	}
-
-But what if the query was "smith"?
-
-	var result = data.filter(fuzzy("smith"));
-
-`result` would contain two elements:
-
+	},
 	{
 		id: "1203922",
 		name: "Jane Doe",
@@ -97,21 +82,63 @@ But what if the query was "smith"?
 		mail: "dan.smith@example.com",
 		twitter: "javascripz",
 	}
+];
+
+var result = data.filter(fuzzy("john"));
+```
+	
+In this scenario, `result` would be an array containing a single element:
+
+```js
+{
+	id: "7128792",
+	name: "John Doe",
+	mail: "jdoe@example.com",
+	twitter: "john_doe"
+}
+```
+
+But what if the query was "smith"?
+
+```js
+var result = data.filter(fuzzy("smith"));
+```
+
+`result` would contain two elements:
+
+```js
+{
+	id: "1203922",
+	name: "Jane Doe",
+	mail: "jane.doe@example.com",
+	twitter: "grannysmithapple"
+},
+{
+	id: "9189701",
+	name: "Dan Smith",
+	mail: "dan.smith@example.com",
+	twitter: "javascripz",
+}
+```
 
 When searching for "smith," `fuzzy-predicate` found a match in the Twitter handle for Jane, and the name (and email) property for Dan. 
 
 Perhaps we only wanted to find people with a _name_ matching "Smith":
 
-	var result = data.filter(fuzzy("smith", ["name"]));
+```js
+var result = data.filter(fuzzy("smith", ["name"]));
+```
 	
 This time, `result` would contain only one element:
 
-	{
-		id: "9189701",
-		name: "Dan Smith",
-		mail: "dan.smith@example.com",
-		twitter: "javascripz",
-	}	
+```js
+{
+	id: "9189701",
+	name: "Dan Smith",
+	mail: "dan.smith@example.com",
+	twitter: "javascripz",
+}
+```	
 
 
 Documentation
