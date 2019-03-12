@@ -24,6 +24,13 @@ var result = data.filter(fuzzy("dan"));
 console.log(result);
 // [{
 // 		name: "Dan Smith"
+// }]	
+
+result = data.filter(fuzzy("dun", 1));
+	
+console.log(result);
+// [{
+// 		name: "Dan Smith"
 // }]
 ```
 
@@ -144,11 +151,12 @@ This time, `result` would contain only one element:
 Documentation
 ------------
 
-**fuzzy(query, keys)**  
+**fuzzy(query, keys, leven)**  
 Returns a filter predicate (function) suitable for passing to [`Array.prototype.filter`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter).
 
 * `query`: The filter query to use to reduce an array down to objects matching the query. This can be a string or a number.
 * `keys`: Optionally restrict the search to a set of keys; only applied when filtering objects. This can be a string containing the name of a single key, or an array of keys.
+* `leven`: The (levenshtein distance](http://en.wikipedia.org/wiki/Levenshtein_distance) used to consider matches. This means that differences such as "Dan" and "Dun" can be tolerated. This is a number that determines the levenshtein threshold.
 
 ### Normalization
 What makes this a "fuzzy" filter is that it is looking for values that _somewhat_ match the query—not exact matches.
