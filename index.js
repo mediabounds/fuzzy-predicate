@@ -1,3 +1,5 @@
+var Leven = require ('leven')
+
 module.exports = fuzzy;
 
 /**
@@ -14,10 +16,11 @@ module.exports = fuzzy;
  *
  * @param  {string|number} query The filter query to use to reduce an array down to objects matching the query.
  * @param  {string|array=} keys Optionally restrict the search to a set of keys; only applied when filtering objects.
+ * @param  {number} leven Use levenshtein distance to determine if the match is acceptable
  *
  * @return {Function} A filter predicate suitable for passing to Array.prototype.filter.
  */
-function fuzzy(query, keys) {
+function fuzzy(query, keys, leven) {
   if (typeof query !== "string" &&
     (typeof query !== "number" || isNaN(query))) {
     throw new TypeError("The query is required and must be a string or number");
@@ -27,12 +30,15 @@ function fuzzy(query, keys) {
     keys = [];
   } else if (typeof keys === "string") {
     keys = [keys];
+  } else if (typeof keys === "number") {
+    leven = keys;
+    keys = [];
   } else if (!Array.isArray(keys)) {
     throw new TypeError("keys should either be an array or a single value as a string");
   }
 
   return function(element) {
-    return _search(element, query, keys);
+    return _search(element, query, keys, leven);
   };
 }
 
@@ -42,19 +48,24 @@ function fuzzy(query, keys) {
  * @param  {*} haystack Searches this object for the needle.
  * @param  {string|number} needle The value to search for within the haystack.
  * @param  {array} keys Restrict searching an object to only match values associated with the specified keys.
+ * @param  {number} leven Use levenshtein distance to determine if the match is acceptable
  *
  * @return {boolean} True if a match was found; false otherwise.
  */
-function _search(haystack, needle, keys) {
+function _search(haystack, needle, keys, leven) {
   switch (typeof haystack) {
     case "number":
       return haystack == needle; // eslint-disable-line eqeqeq
     case "string":
-      return _normalize(haystack).indexOf(_normalize(needle)) >= 0;
+      if (!!leven) { 
+          return Leven(_normalize(haystack), (_normalize(needle))) <= leven;
+      } else {
+          return _normalize(haystack).indexOf(_normalize(needle)) >= 0;
+      }
     case "object":
       for (var key in haystack) {
         if (haystack.hasOwnProperty(key) && (keys.length === 0 || keys.indexOf(key) >= 0)) {
-          if (_search(haystack[key], needle, keys)) {
+          if (_search(haystack[key], needle, keys, leven)) {
             return true;
           }
         }
