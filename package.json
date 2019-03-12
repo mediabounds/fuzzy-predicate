@@ -13,7 +13,7 @@
   "repository": "mediabounds/fuzzy-predicate",
   "license": "MIT",
   "dependencies": {
-    "leven": "^2.1.0"
+    "string-similarity": "^3.0.0"
   },
   "devDependencies": {
     "eslint": "^3.13.1",
