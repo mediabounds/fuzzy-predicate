@@ -12,6 +12,9 @@
   "author": "Daniel Pfeiffer",
   "repository": "mediabounds/fuzzy-predicate",
   "license": "MIT",
+  "dependencies": {
+    "string-similarity": "^3.0.0"
+  },
   "devDependencies": {
     "eslint": "^3.13.1",
     "eslint-config-google": "^0.6.0",

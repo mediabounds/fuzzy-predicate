@@ -24,6 +24,13 @@ var result = data.filter(fuzzy("dan"));
 console.log(result);
 // [{
 // 		name: "Dan Smith"
+// }]	
+
+result = data.filter(fuzzy("dun", 0.2));
+	
+console.log(result);
+// [{
+// 		name: "Dan Smith"
 // }]
 ```
 
@@ -144,11 +151,12 @@ This time, `result` would contain only one element:
 Documentation
 ------------
 
-**fuzzy(query, keys)**  
+**fuzzy(query, keys, leven)**  
 Returns a filter predicate (function) suitable for passing to [`Array.prototype.filter`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter).
 
 * `query`: The filter query to use to reduce an array down to objects matching the query. This can be a string or a number.
 * `keys`: Optionally restrict the search to a set of keys; only applied when filtering objects. This can be a string containing the name of a single key, or an array of keys.
+* `threshold`: The [Dice's Coefficient](https://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficient) threshold used to consider matches. This means that differences such as "In my camp Dan has a fire" and "Dun has fire" can be tolerated. It's a fraction between 0 and 1, which indicates the degree of similarity between the needle and haystack. 0 indicates completely different strings, 1 indicates identical strings.
 
 ### Normalization
 What makes this a "fuzzy" filter is that it is looking for values that _somewhat_ match the query—not exact matches.
@@ -158,7 +166,7 @@ When comparing strings, the needle (the query) and the haystack value are both n
 1. Convert the string to a lowercase string
 2. Remove all non-word characters (characters matching the `\W` regex and underscores)
 
-Then, instead of checking string equality, it checks to see if the haystack value contains the needle value (using `indexOf`). If it does, it's considered a match.
+Then, instead of checking string equality, it checks to see if the haystack value contains the needle value (using `indexOf`). If it does, it's considered a match. If threshold is supplied, then a [Dice's Coefficient](https://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficient) algorithm is used to compare the degree of difference between the needle and haystack and if it's above or equal to the threshold then it's a match.
 
 This process only applies when comparing strings; numbers must be exactly equal to be considered a match.
 
@@ -171,3 +179,7 @@ Contributing
 I welcome pull requests containing bug fixes and documentation improvements for `fuzzy-predicate`. Be sure to run the tests before submitting any changes.
 
 And although I consider `fuzzy-predicate` to be _mostly_ feature complete, I welcome discussion on how it could be a more useful tool (e.g. if callers could customize how normalization worked).
+
+Contributors
+------------
+[Emmanuel Mahuni](https://github.com/emahuni) - Added Dice algorithm option for truly fuzzy matches
