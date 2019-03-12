@@ -26,7 +26,7 @@ console.log(result);
 // 		name: "Dan Smith"
 // }]	
 
-result = data.filter(fuzzy("dun", 1));
+result = data.filter(fuzzy("dun", 0.2));
 	
 console.log(result);
 // [{
