@@ -106,6 +106,12 @@ describe("fuzzy-predicate", function() {
       results = haystack.filter(fuzzy("JOHN_DOE"));
       assert.deepStrictEqual(results, ["John Doe", "To John Doe", "john-doe"]);
     });
+    
+    it("matches strings containing the query using levenshtein distance", function() {
+      var results = haystack.filter(fuzzy("Jane",{leven: 2}));
+      assert.deepStrictEqual(results, ["Jane Smith"]);
+    });
+
   });
 
   context("given an array of numbers", function() {
